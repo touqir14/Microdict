@@ -1,3 +1,9 @@
+#Custom
+benchmarks/
+build/
+misc/
+__pycache__/
+
 # Prerequisites
 *.d
 
