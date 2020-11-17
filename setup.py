@@ -15,7 +15,8 @@ setup (name = 'mdict',
         author_email = 'shuhash6@gmail.com',
         description = 'The microdict library - a high performance hashtable implementation',
         ext_package = '_mdict_c',
-        py_modules = ['mdict'],
+        # py_modules = ['mdict'],
+        py_modules = [os.path.join(parent_dir, 'mdict')],
         ext_modules = [module_i32_i32, module_i32_i64, module_i64_i32, module_i64_i64, module_str_str])
 
 
