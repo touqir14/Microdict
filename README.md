@@ -76,17 +76,17 @@ Currently, Microdict includes 5 types of dictionaries:
 #### Method Documentations
 * **mdict.create** (*dtype, key_len=None, val_len=None*)
 
-   : Returns a Microdict hash table of types given [above](#hash-table-types).
+   : Returns a Microdict hash table of any of the types given [above](#hash-table-types).
    
    **Parameters:**
    
-   * *dtype:*  A python string type (```str```). It can be anyone of the above [types](#hash-table-types).
+   * *dtype:*  A python string type (```str```). It can be any one of the above [types](#hash-table-types).
    * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a TypeError.
    * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a TypeError.
    
 * **mdict.listDictionaryTypes** ()
 
-   : Prints a series of lines of the form : ```Key Type: key_t . Value Type: val_t```, where ```key_t:val_t``` forms the types given [above](#hash-table-types).
+   : Prints a series of lines of the form : ```Key Type: key_t . Value Type: val_t```, where ```key_t:val_t``` forms a type given [above](#hash-table-types).
    
 The following are the methods that are common to all hash table types returned by ```mdict.create```.
 * **clear** (*key_list = None*)
@@ -115,7 +115,7 @@ The following are the methods that are common to all hash table types returned b
    
 * **items** ()
 
-   : Used to iterating over items using a ```for``` loop. Example : ```for k,v in d.items() : print(k, v)```
+   : Used to iterate over items using a ```for``` loop. Example : ```for k,v in d.items() : print(k, v)```
    
 * **pop** (*key*)
 
@@ -139,7 +139,7 @@ The following are the methods that are common to all hash table types returned b
    
 * **values** ()
 
-   : Used to iterating over values using a ```for``` loop. Example : ```for v in d.values() : print(v)```.
+   : Used to iterate over values using a ```for``` loop. Example : ```for v in d.values() : print(v)```.
 
 
 ### Performance
