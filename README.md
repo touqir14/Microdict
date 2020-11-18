@@ -65,7 +65,7 @@ print(list(d2)) # prints all d2 keys
 print(d2.get_keys()) # Same but faster approach
 
 ```
-
+#### Hash Table types
 Currently, Microdict includes 5 types of dictionaries:
 * ```"i32:i32"``` -> 32 bit signed keys and 32 bit signed values
 * ```"i32:i64"``` -> 32 bit signed keys and 64 bit signed values
@@ -73,6 +73,16 @@ Currently, Microdict includes 5 types of dictionaries:
 * ```"i64:i64"``` -> 64 bit signed keys and 64 bit signed values
 * ```"str:str"``` -> string keys and string values.
 
+#### Method Documentations
+* **mdict.create** *(dtype, key_len=None, val_len=None)*
+
+   : Returns a Microdict hash table of types given [above](hash_table_types).
+   
+   **Parameters:**
+   
+   * *dtype:*  A python string type (```str```). It can be anyone of the above [types](hash_table_types).
+   * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. 
+   * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```.
 
 ### Performance
 #### Competing with Python Dictionary
