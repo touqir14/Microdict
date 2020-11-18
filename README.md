@@ -74,15 +74,73 @@ Currently, Microdict includes 5 types of dictionaries:
 * ```"str:str"``` -> string keys and string values.
 
 #### Method Documentations
-* **mdict.create** *(dtype, key_len=None, val_len=None)*
+* **mdict.create** (*dtype, key_len=None, val_len=None*)
 
-   : Returns a Microdict hash table of types given [above](hash_table_types).
+   : Returns a Microdict hash table of types given [above](#hash-table-types).
    
    **Parameters:**
    
-   * *dtype:*  A python string type (```str```). It can be anyone of the above [types](hash_table_types).
-   * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. 
-   * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```.
+   * *dtype:*  A python string type (```str```). It can be anyone of the above [types](#hash-table-types).
+   * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a TypeError.
+   * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a TypeError.
+   
+* **mdict.listDictionaryTypes** ()
+
+   : Prints a series of lines of the form : ```Key Type: key_t . Value Type: val_t```, where ```key_t:val_t``` forms the types given [above](#hash-table-types).
+   
+The following are the methods that are common to all hash table types returned by ```mdict.create```.
+* **clear** (*key_list = None*)
+
+   : Returns None. If *key_list* is not provided, the **clear** method will delete all items from the hash table.
+   
+   **Parameters:**
+   
+   * *key_list:* It is an optional argument but not a keyword optional argument (keyword must not be provided). So, it suffices: ```keys = [1,2]; d.clear(keys)```. If provided, it must be of type ```list```. The entries within *key_list* are the keys that will be removed from the hash table. By default, any entry that is not present in the hash table will be skipped. For any of the integer hash table types, any non python ```int``` entry will be skipped. It is upto the programmer to pass the proper sized integer to prevent overflows. For ```str:str``` type, the entries must be python UTF-8 strings with UTF-8 character bytes upto *key_len* as set by ```mdict.create``` and otherwise, that entry will be skipped.
+   
+* **copy** ()
+
+   : Returns a deep copy of the Microdict Hash table of the same type as the caller Hash table object.
+   
+* **get_items** ()
+
+   : Creates and returns a python ```list``` containing all the items (key, value) in the hash table.
+   
+* **get_keys** ()
+   
+   : Creates and returns a python ```list``` containing all the keys in the hash table.
+   
+* **get_values** ()
+
+   : Creates and returns a python ```list``` containing all the values in the hash table.
+   
+* **items** ()
+
+   : Used to iterating over items using a ```for``` loop. Example : ```for k,v in d.items() : print(k, v)```
+   
+* **pop** (*key*)
+
+   : Deletes a *key* from the hash table and returns its corresponding value. If the *key* is not present, then a ```KeyError``` is raised.
+   
+   **Parameters:**
+   
+   * *key:* For any of the integer hash table types, any non python ```int``` entry will raise a ```TypeError```. It is upto the programmer to pass the proper sized integer to prevent overflows. For ```str:str``` type, the entries must be python UTF-8 strings with UTF-8 character bytes upto *key_len* as set by ```mdict.create``` and otherwise, a ```TypeError``` will be raised.
+   
+* **to_Pydict** ()
+
+   : Creates and returns a python dictionary containing all items present in the Microdict hash table.
+   
+* **update** (*dictionary*)
+
+   : Inserts all the items present in the dictionary into the Microdict hash table.
+   
+   **Parameters:**
+   
+   * *dictionary:* Must be either a python dictionary or a Microdict hash table. If it is a python dictionary, then all its items that are of the same type as the Microdict hash table will be inserted. The rest will be skipped by default. The conditions given in the method documentation of **clear** regarding type constraints apply here too.   
+   
+* **values** ()
+
+   : Used to iterating over values using a ```for``` loop. Example : ```for v in d.values() : print(v)```.
+
 
 ### Performance
 #### Competing with Python Dictionary
