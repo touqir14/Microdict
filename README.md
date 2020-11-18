@@ -81,8 +81,8 @@ Currently, Microdict includes 5 types of dictionaries:
    **Parameters:**
    
    * *dtype:*  A python string type (```str```). It can be any one of the above [types](#hash-table-types).
-   * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a TypeError.
-   * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a TypeError.
+   * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a ```TypeError```.
+   * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a ```TypeError```.
    
 * **mdict.listDictionaryTypes** ()
 
