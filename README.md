@@ -1,5 +1,5 @@
 # Microdict
-A high performance python Hash table library. It currently supports Python 3.5+.
+A high performance python hash table library that is generally faster and consumes significantly less memory than Python Dictionaries. It currently supports Python 3.5+.
 
 ### Why Microdict? Why create another Hash table library when there is the builtin Python Dictionary?
 Python Dictionaries are fast but their memory consumption can also be high at the same time. This is partly due to the nature of Python keeping data, within RAM, in the form of PyObjects, which consume far more memory than native types such as Integers and Character Arrays. As a result, Python Dictionaries can be prohibitive in many cases while building memory intensive python applications. This motivated me to develop a typed python hash table library that consumes significantly (upto 7 times) less memory compared to python dictionaries. It is also faster than python dictionaries. Moreover, it's underlying C implementation can also outperform Google's highly optimized [Swiss Table](https://abseil.io/blog/20180927-swisstables) and Facebook's [F14](https://engineering.fb.com/2019/04/25/developer-tools/f14/) hash tables. See the [Performance Section](#performance).
