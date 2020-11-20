@@ -4,12 +4,15 @@ A high performance python hash table library that is generally faster and consum
 ### Why Microdict? Why create another Hash table library when there is the builtin Python Dictionary?
 Python Dictionaries are fast but their memory consumption can also be high at the same time. This is partly due to the nature of Python keeping data, within RAM, in the form of PyObjects, which consume far more memory than native types such as Integers and Character Arrays. As a result, Python Dictionaries can be prohibitive in many cases while building memory intensive python applications. This motivated me to develop a typed python hash table library that consumes significantly (upto 7 times) less memory compared to python dictionaries. It is also faster than python dictionaries. Moreover, it's underlying C implementation can also outperform Google's highly optimized [Swiss Table](https://abseil.io/blog/20180927-swisstables) and Facebook's [F14](https://engineering.fb.com/2019/04/25/developer-tools/f14/) hash tables. See the [Performance Section](#performance).
 
-### Usage
+### Installation
 Microdict is absolutely built using C extensions and as such building it will require Python C api header files. Build and install the package using 
-```python setup.py install``` from the terminal after cloning the repository. The following code snippet shows common uses of the library.
+```python setup.py install``` from the terminal after cloning the repository. Microdict is tested to work on Linux, Mac OSX, and Windows systems. You will need GCC 7+ on linux/mac osx systems and Visual C++ 14+ compiler on Windows systems to build the package.
+
+### Usage
+The following code snippet shows common uses of the library.
 
 ```python
-import mdict
+from microdict import mdict
 
 dict_i32 = mdict.create("i32:i32") # Generates a dictionary with key and value type of signed 32 bit integer.
 dict_i32[1] = 2 # Just like python dictionaries, setting a key value pair.
@@ -74,7 +77,7 @@ Currently, Microdict includes 5 types of dictionaries:
 * ```"str:str"``` -> string keys and string values.
 
 #### Method Documentations
-* **mdict.create** (*dtype, key_len=None, val_len=None*)
+* **microdict.mdict.create** (*dtype, key_len=None, val_len=None*)
 
    : Returns a Microdict hash table of any of the types given [above](#hash-table-types).
    
@@ -84,7 +87,7 @@ Currently, Microdict includes 5 types of dictionaries:
    * *key_len:*  A python Integer type (```int```). It sets the maximum number of bytes the characters of a key (UTF-8 string) requires. Passing a UTF-8 encoded string key which consumes more bytes than *key_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a ```TypeError```.
    * *val_len:* A python Integer type(```int```). It sets the maximum number of bytes the characters of a value (UTF-8 string) requires. Passing a UTF-8 encoded string value which consumes more bytes than *val_len* will not be accepted. This argument is only applicable when ```dtype="str:str"```. It only accepts a value of at most 65355 and a larger value will raise a ```TypeError```.
    
-* **mdict.listDictionaryTypes** ()
+* **microdict.mdict.listDictionaryTypes** ()
 
    : Prints a series of lines of the form : ```Key Type: key_t . Value Type: val_t```, where ```key_t:val_t``` forms a type given [above](#hash-table-types).
    
