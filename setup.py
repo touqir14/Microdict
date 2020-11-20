@@ -9,23 +9,23 @@ def read(filename):
     return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
 if os.name != 'nt':
-	if sys.platform == 'darwin':
-		os.environ['CC'] = 'gcc-8'
+    if sys.platform == 'darwin' and 'APPVEYOR' in os.environ:
+        os.environ['CC'] = 'gcc-8'
 
-	module_i32_i32 = Extension('i32_i32', sources = [os.path.join(parent_dir, 'int32_int32_Py.c')], extra_compile_args = ["-O3", "-w"])
-	module_i32_i64 = Extension('i32_i64', sources = [os.path.join(parent_dir, 'int32_int64_Py.c')], extra_compile_args = ["-O3", "-w"])
-	module_i64_i32 = Extension('i64_i32', sources = [os.path.join(parent_dir, 'int64_int32_Py.c')], extra_compile_args = ["-O3", "-w"])
-	module_i64_i64 = Extension('i64_i64', sources = [os.path.join(parent_dir, 'int64_int64_Py.c')], extra_compile_args = ["-O3", "-w"])
-	module_str_str = Extension('str_str', sources = [os.path.join(parent_dir, 'str_str_wyhash_Py.c')], extra_compile_args = ["-O3", "-w"])
+    module_i32_i32 = Extension('i32_i32', sources = [os.path.join(parent_dir, 'int32_int32_Py.c')], extra_compile_args = ["-O3", "-w"])
+    module_i32_i64 = Extension('i32_i64', sources = [os.path.join(parent_dir, 'int32_int64_Py.c')], extra_compile_args = ["-O3", "-w"])
+    module_i64_i32 = Extension('i64_i32', sources = [os.path.join(parent_dir, 'int64_int32_Py.c')], extra_compile_args = ["-O3", "-w"])
+    module_i64_i64 = Extension('i64_i64', sources = [os.path.join(parent_dir, 'int64_int64_Py.c')], extra_compile_args = ["-O3", "-w"])
+    module_str_str = Extension('str_str', sources = [os.path.join(parent_dir, 'str_str_wyhash_Py.c')], extra_compile_args = ["-O3", "-w"])
 
-	os.system('gcc -v')
+    os.system('gcc -v')
 else:
-	# If windows:
-	module_i32_i32 = Extension('i32_i32', sources = [os.path.join(parent_dir, 'int32_int32_Py.c')], extra_compile_args = ["/O2", "/w"])
-	module_i32_i64 = Extension('i32_i64', sources = [os.path.join(parent_dir, 'int32_int64_Py.c')], extra_compile_args = ["/O2", "/w"])
-	module_i64_i32 = Extension('i64_i32', sources = [os.path.join(parent_dir, 'int64_int32_Py.c')], extra_compile_args = ["/O2", "/w"])
-	module_i64_i64 = Extension('i64_i64', sources = [os.path.join(parent_dir, 'int64_int64_Py.c')], extra_compile_args = ["/O2", "/w"])
-	module_str_str = Extension('str_str', sources = [os.path.join(parent_dir, 'str_str_wyhash_Py.c')], extra_compile_args = ["/O2", "/w"])
+    # If windows:
+    module_i32_i32 = Extension('i32_i32', sources = [os.path.join(parent_dir, 'int32_int32_Py.c')], extra_compile_args = ["/O2", "/w"])
+    module_i32_i64 = Extension('i32_i64', sources = [os.path.join(parent_dir, 'int32_int64_Py.c')], extra_compile_args = ["/O2", "/w"])
+    module_i64_i32 = Extension('i64_i32', sources = [os.path.join(parent_dir, 'int64_int32_Py.c')], extra_compile_args = ["/O2", "/w"])
+    module_i64_i64 = Extension('i64_i64', sources = [os.path.join(parent_dir, 'int64_int64_Py.c')], extra_compile_args = ["/O2", "/w"])
+    module_str_str = Extension('str_str', sources = [os.path.join(parent_dir, 'str_str_wyhash_Py.c')], extra_compile_args = ["/O2", "/w"])
 
 
 setup (name = 'microdict',
@@ -52,9 +52,9 @@ setup (name = 'microdict',
           'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
-		  'Programming Language :: Python :: 3.9',
-		  'Programming Language :: Python :: implementation :: Cpython',
-		  'Programming Language :: C',
+          'Programming Language :: Python :: 3.9',
+          'Programming Language :: Python :: implementation :: Cpython',
+          'Programming Language :: C',
           'Topic :: Software Development',
           'Topic :: Utilities',],
         )
