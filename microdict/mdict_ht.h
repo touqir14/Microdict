@@ -5,9 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
-// #include <unistd.h>
 #include <math.h>
-#include <malloc.h>
 
 /* 
 	Microdictionary hashtable implementation.

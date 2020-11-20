@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "int64_int32.h"
+#include "int64_int64.h"
 #include <stdbool.h>
 #include <inttypes.h>
 #include "flags.h"
@@ -12,14 +12,14 @@
 
 typedef struct
 {
-    PyObject_HEAD;
+    PyObject_HEAD
     h_t* ht;    
     i_t iter_idx;
     i_t iter_num;
 } iterObj;
 
 typedef struct {
-    PyObject_HEAD;
+    PyObject_HEAD
     h_t* ht;
     bool valid_ht;
     i_t iter_idx;
@@ -39,9 +39,9 @@ static PyObject* item_iter(iterObj* self);
 static PyObject* item_iternext(iterObj* self);
 
 
-static PyTypeObject valueIterType_i64_i32 = {
+static PyTypeObject valueIterType_i64_i64 = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "i64->i32 value iterator",
+    .tp_name = "i64->i64 value iterator",
     .tp_doc = "",
     .tp_basicsize = sizeof(iterObj),
     .tp_itemsize = 0,
@@ -51,9 +51,9 @@ static PyTypeObject valueIterType_i64_i32 = {
     .tp_iternext = (iternextfunc) value_iternext,
 };
 
-static PyTypeObject itemIterType_i64_i32 = {
+static PyTypeObject itemIterType_i64_i64 = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "i64->i32 item iterator",
+    .tp_name = "i64->i64 item iterator",
     .tp_doc = "",
     .tp_basicsize = sizeof(iterObj),
     .tp_itemsize = 0,
@@ -98,7 +98,7 @@ static PyObject* value_iternext(iterObj* self) {
         }
     }
 
-    return PyLong_FromLong((long) val);
+    return PyLong_FromLongLong((int64_t) val);
 }
 
 
@@ -137,7 +137,7 @@ static PyObject* item_iternext(iterObj* self) {
         }
     }
 
-    return PyTuple_Pack(2, PyLong_FromLong((long) key), PyLong_FromLong((long) val));
+    return PyTuple_Pack(2, PyLong_FromLongLong((int64_t) key), PyLong_FromLongLong((int64_t) val));
 }
 
 
@@ -201,12 +201,12 @@ static int custom_init(dictObj* self, PyObject *args) {
 
     _create(self);
 
-    self->value_iterator = (iterObj *) valueIterType_i64_i32.tp_alloc(&valueIterType_i64_i32, 0); 
+    self->value_iterator = (iterObj *) valueIterType_i64_i64.tp_alloc(&valueIterType_i64_i64, 0); 
     self->value_iterator->ht = self->ht;
     self->value_iterator->iter_idx = 0;
     self->value_iterator->iter_num = 0;
 
-    self->item_iterator = (iterObj *) itemIterType_i64_i32.tp_alloc(&itemIterType_i64_i32, 0); 
+    self->item_iterator = (iterObj *) itemIterType_i64_i64.tp_alloc(&itemIterType_i64_i64, 0); 
     self->item_iterator->ht = self->ht;
     self->item_iterator->iter_idx = 0;
     self->item_iterator->iter_num = 0;
@@ -225,7 +225,7 @@ static PyObject* del(dictObj* self, PyObject* args){
 
     kbox_t k; vbox_t v; int ret_val;
 
-    if (!PyArg_ParseTuple(args, "l", &k))
+    if (!PyArg_ParseTuple(args, "L", &k))
         return NULL;
 
     if (self->temp_isvalid && k == self->temp_key)
@@ -239,10 +239,10 @@ static PyObject* del(dictObj* self, PyObject* args){
         PyErr_SetString(PyExc_KeyError, msg);
         return NULL;
     }
-    else
-        return PyLong_FromLong((long) v);
+    else {
+        return PyLong_FromLongLong((int64_t) v);
+    }
 }
-
 
 static PyObject* clear(dictObj* self, PyObject* args){
     /*
@@ -282,7 +282,7 @@ static PyObject* clear(dictObj* self, PyObject* args){
     Py_ssize_t len = PyList_Size(list);
     for (Py_ssize_t i=0; i<len; ++i){
         PyObject* item = PyList_GetItem(list, i);
-        k = (kbox_t) PyLong_AsLong(item);
+        k = (kbox_t) PyLong_AsLongLong(item);
         if (!(k == -1 && PyErr_Occurred())) {
             mdict_del_map(self->ht, k, NULL);
         } else if (_get_flag(self->flags, FLAG_CLEAR_RET_EXC)) {
@@ -315,7 +315,7 @@ static PyObject* get_keys(dictObj* self) {
     for (i_t i=0; idx<len; ++i) {
         if (!_flags_isempty(h->flags, i)) {
             kbox_t key = h->keys[i];
-            PyObject* key_obj = PyLong_FromLong((long) key);
+            PyObject* key_obj = PyLong_FromLongLong((int64_t) key);
             if (key_obj != NULL)
                 PyList_SET_ITEM(list, idx, key_obj);
             else {
@@ -350,7 +350,7 @@ static PyObject* get_values(dictObj* self) {
     for (i_t i=0; idx<len; ++i) {
         if (!_flags_isempty(h->flags, i)) {
             vbox_t val = h->vals[i];
-            PyObject* val_obj = PyLong_FromLong((long) val); 
+            PyObject* val_obj = PyLong_FromLongLong((int64_t) val); 
             if (val_obj != NULL)
                 PyList_SET_ITEM(list, idx, val_obj);
             else {
@@ -385,7 +385,7 @@ static PyObject* get_items(dictObj* self) {
         if (!_flags_isempty(h->flags, i)) {
             kbox_t key = h->keys[i];
             vbox_t val = h->vals[i];
-            PyObject* item_obj =  Py_BuildValue("li", key, val);
+            PyObject* item_obj =  Py_BuildValue("LL", key, val);
             if (item_obj != NULL)
                 PyList_SET_ITEM(list, idx, item_obj);
             else {                
@@ -411,7 +411,7 @@ int _update_from_Pydict(dictObj* self, PyObject* dict) {
     Py_ssize_t pos = 0;
 
     while (PyDict_Next(dict, &pos, &key_obj, &value_obj)) {
-        kbox_t key = (kbox_t) PyLong_AsLong(key_obj);
+        kbox_t key = (kbox_t) PyLong_AsLongLong(key_obj);
         if (key == -1 && PyErr_Occurred()) {
             if (_get_flag(self->flags, FLAG_UPDATE_ARG_EXC)) {
                 PyErr_SetString(PyExc_TypeError, "Python Dictionary contains key objects of Non Integer type");
@@ -420,7 +420,7 @@ int _update_from_Pydict(dictObj* self, PyObject* dict) {
                 continue;
         }
         
-        vbox_t val = (vbox_t) PyLong_AsLong(value_obj);
+        vbox_t val = (vbox_t) PyLong_AsLongLong(value_obj);
         if (val == -1 && PyErr_Occurred()) {
             if (_get_flag(self->flags, FLAG_UPDATE_ARG_EXC)) {
                 PyErr_SetString(PyExc_TypeError, "Python Dictionary contains value objects of Non Integer type");
@@ -446,8 +446,8 @@ void _update_from_mdict(dictObj* self, dictObj* dict) {
         if (!_flags_isempty(h2->flags, i)) {
             kbox_t key = h2->keys[i];
             vbox_t val = h2->vals[i];
-            mdict_set(h, key, val);     
-            idx += 1;
+            mdict_set(h, key, val);
+            idx += 1;     
         }
     }
 }
@@ -468,7 +468,7 @@ static PyObject* to_Pydict(dictObj* self) {
             if (!_flags_isempty(h->flags, i)) {
                 kbox_t key = h->keys[i];
                 vbox_t val = h->vals[i];
-                if (PyDict_SetItem(dict, PyLong_FromLong((long) key), PyLong_FromLong((long) val)) == -1) {
+                if (PyDict_SetItem(dict, PyLong_FromLongLong((int64_t) key), PyLong_FromLongLong((int64_t) val)) == -1) {
                     if (_get_flag(self->flags, FLAG_PYDICT_ARG_EXC)) {    
                         PyErr_SetString(PyExc_MemoryError, "Insufficient memory : Could not add all (key, value) pairs to the Python Dictionary object");
                         Py_DECREF(dict);
@@ -494,7 +494,7 @@ static int _contains_(dictObj* self, PyObject* key) {
 
     kbox_t k; i_t idx;
     
-    k = (kbox_t) PyLong_AsLong(key);
+    k = (kbox_t) PyLong_AsLongLong(key);
     if (k == -1 && PyErr_Occurred()) {        
         PyErr_SetString(PyExc_TypeError, "Key needs to be a 64 bit Int");
         return -1;
@@ -525,18 +525,18 @@ static PyObject* mapping_get(dictObj* self, PyObject* key){
 
     kbox_t k; vbox_t v; i_t idx;
 
-    k = (kbox_t) PyLong_AsLong(key);
+    k = (kbox_t) PyLong_AsLongLong(key);
     if (k == -1 && PyErr_Occurred()) {        
         PyErr_SetString(PyExc_TypeError, "Key needs to be a 64 bit Int");
         return NULL;
     }
 
     if (self->temp_isvalid && k == self->temp_key) {
-        return PyLong_FromLong((long) self->temp_val);        
+        return PyLong_FromLongLong((int64_t) self->temp_val);        
     } else {
         v = mdict_get_map(self->ht, k, &idx);
         if (idx != self->ht->num_buckets)
-            return PyLong_FromLong((long) v);
+            return PyLong_FromLongLong((int64_t) v);
         else {
             if (!_get_flag(self->flags, FLAG_GET_RET_EXC))
                 return Py_BuildValue("");
@@ -556,19 +556,19 @@ static int mapping_set(dictObj* self, PyObject* key, PyObject* val){
 
     vbox_t v; kbox_t k;
     
-    k = (kbox_t) PyLong_AsLong(key);
+    k = (kbox_t) PyLong_AsLongLong(key);
     if (k == -1 && PyErr_Occurred()) {        
         PyErr_SetString(PyExc_TypeError, "Key needs to be a 64 bit Int");
         return -1;
     }
 
-    v = (vbox_t) PyLong_AsLong(val);
+    v = (vbox_t) PyLong_AsLongLong(val);
     if (v == -1 && PyErr_Occurred()) {        
-        PyErr_SetString(PyExc_TypeError, "Value needs to be a 32 bit Int");
+        PyErr_SetString(PyExc_TypeError, "Value needs to be a 64 bit Int");
         return -1;
     }
 
-    mdict_set(self->ht, k, v);    
+    mdict_set(self->ht, k, v);     // insert a key to the hash table
 
     if (self->temp_isvalid && k == self->temp_key) { // This logic supports that setting a value does not necessarily cache (key, val) pair and that the cache is mainly for the iterator.
         self->temp_val = v;
@@ -614,7 +614,7 @@ static PyObject* mdict_iternext(dictObj* self) {
         }
     }
 
-    return PyLong_FromLong((long) self->temp_key);
+    return PyLong_FromLongLong((int64_t) self->temp_key);
 }
 
 
@@ -667,7 +667,7 @@ static PyObject* map(dictObj* self, PyObject* args) {
     Py_ssize_t size = PyList_Size(list);
     output_list = PyList_New(size);
     for (int i=0; i<size; ++i){
-        long key = PyLong_AsLong(PyList_GET_ITEM(list, i));
+        int64_t key = PyLong_AsLongLong(PyList_GET_ITEM(list, i));
         if (key == -1 && PyErr_Occurred()) {
             PyList_SET_ITEM(output_list, i, Py_BuildValue(""));
             continue;
@@ -676,9 +676,9 @@ static PyObject* map(dictObj* self, PyObject* args) {
         vbox_t val = mdict_get_map(self->ht, (kbox_t) key, &ret_idx);
         if (ret_idx != self->ht->num_buckets) {
             if (func == NULL)
-                PyList_SET_ITEM(output_list, i, PyLong_FromLong(val));
+                PyList_SET_ITEM(output_list, i, PyLong_FromLongLong(val));
             else {
-                PyObject* result = PyObject_CallFunction(func, "i", val);
+                PyObject* result = PyObject_CallFunction(func, "L", val);
                 if (result != NULL)
                     PyList_SET_ITEM(output_list, i, result);                                        
                 else
@@ -694,7 +694,8 @@ static PyObject* map(dictObj* self, PyObject* args) {
 }
 
 
-static PyMethodDef methods_i64_i32[] = {
+static PyMethodDef methods_i64_i64[] = {
+    // {"destroy", destroy_ht, METH_VARARGS, "destroys a hash table"},
     {"pop", del, METH_VARARGS, "deletes a key-value pair and pops its value"},
     {"clear", clear, METH_VARARGS, "clears the hashtable"},
     {"get_keys", get_keys, METH_VARARGS, "returns a list of all keys"},
@@ -710,7 +711,7 @@ static PyMethodDef methods_i64_i32[] = {
 };
 
 
-static PySequenceMethods sequence_i64_i32 = {
+static PySequenceMethods sequence_i64_i64 = {
     _len_,                            /* sq_length */
     0,                                  /* sq_concat */
     0,                                  /* sq_repeat */
@@ -721,26 +722,26 @@ static PySequenceMethods sequence_i64_i32 = {
     (objobjproc) _contains_,           /* sq_contains */
 };
 
-static PyMappingMethods mapping_i64_i32 = {
+static PyMappingMethods mapping_i64_i64 = {
     0, /*mp_length*/
     (binaryfunc)mapping_get, /*mp_subscript*/
     (objobjargproc)mapping_set, /*mp_ass_subscript*/
 };
 
 
-static PyTypeObject dictType_i64_i32 = {
+static PyTypeObject dictType_i64_i64 = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "i64->i32",
-    .tp_doc = "int64->int32 microdictionary",
+    .tp_name = "i64->i64",
+    .tp_doc = "int64->int64 microdictionary", // ??
     .tp_basicsize = sizeof(dictObj),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_new = custom_new,
     .tp_init = (initproc) custom_init,
     .tp_dealloc = (destructor) custom_dealloc,
-    .tp_methods = methods_i64_i32,
-    .tp_as_sequence = &sequence_i64_i32,
-    .tp_as_mapping = &mapping_i64_i32,
+    .tp_methods = methods_i64_i64,
+    .tp_as_sequence = &sequence_i64_i64,
+    .tp_as_mapping = &mapping_i64_i64,
     .tp_iter = (getiterfunc) mdict_iter,
     .tp_iternext = (iternextfunc) mdict_iternext,
 };
@@ -764,8 +765,8 @@ static PyObject* update(dictObj* self, PyObject* args) {
             return NULL;
         }
 
-        if (PyObject_IsInstance(dict, (PyObject *) &dictType_i64_i32) != 1) {
-            PyErr_SetString(PyExc_TypeError, "Argument needs to be either a (64 bit key, 32 bit value) Int microdictionary or (64 bit key, 32 bit value) Int Python dictionary");
+        if (PyObject_IsInstance(dict, (PyObject *) &dictType_i64_i64) != 1) {
+            PyErr_SetString(PyExc_TypeError, "Argument needs to be either a 64 bit (key,value) Int microdictionary or 64 bit(key, value) Int Python dictionary");
             return NULL;
         }
  
@@ -784,34 +785,34 @@ static PyObject* update(dictObj* self, PyObject* args) {
 }
 
 
-static struct PyModuleDef moduleDef_i64_i32 =
+static struct PyModuleDef moduleDef_i64_i64 =
 {
     PyModuleDef_HEAD_INIT,
-    "int64_int32 microdictionary", /* name of module */ 
+    "int64_int64 microdictionary", /* name of module */ 
     NULL, // Documentation of the module
     -1,   /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
 };
 
-PyMODINIT_FUNC PyInit_i64_i32(void)
+PyMODINIT_FUNC PyInit_i64_i64(void) // ??
 {
     PyObject *obj;
 
-    if (PyType_Ready(&dictType_i64_i32) < 0)
+    if (PyType_Ready(&dictType_i64_i64) < 0)
         return NULL;
 
-    if (PyType_Ready(&valueIterType_i64_i32) < 0)
+    if (PyType_Ready(&valueIterType_i64_i64) < 0)
         return NULL;
 
-    if (PyType_Ready(&itemIterType_i64_i32) < 0)
+    if (PyType_Ready(&itemIterType_i64_i64) < 0)
         return NULL;
 
-    obj = PyModule_Create(&moduleDef_i64_i32);
+    obj = PyModule_Create(&moduleDef_i64_i64);
     if (obj == NULL)
         return NULL;
 
-    Py_INCREF(&dictType_i64_i32);
-    if (PyModule_AddObject(obj, "create", (PyObject *) &dictType_i64_i32) < 0) {
-        Py_DECREF(&dictType_i64_i32);
+    Py_INCREF(&dictType_i64_i64);
+    if (PyModule_AddObject(obj, "create", (PyObject *) &dictType_i64_i64) < 0) {
+        Py_DECREF(&dictType_i64_i64);
         Py_DECREF(obj);
         return NULL;
     }

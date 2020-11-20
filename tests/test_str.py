@@ -1,6 +1,6 @@
 import unittest
 import random
-import mdict
+from microdict import mdict
 import string
 
 def randStr(chars = string.ascii_uppercase + string.digits, N=10):
@@ -169,7 +169,6 @@ class Test_str_str(unittest.TestCase):
 
 		get_val = lambda d,x: d[x]
 		self.assertRaises(TypeError, get_val, d1, 1)
-		# self.assertRaises(KeyError, get_val, d1, '5')
 
 		def set_val(d,k,v): d[k]=v
 		self.assertRaises(TypeError, set_val, d1, 1, 1)
@@ -177,7 +176,6 @@ class Test_str_str(unittest.TestCase):
 		self.assertFalse('5' in d1)
 
 		self.assertRaises(TypeError, d1.pop, 1)
-		# print("d1.pop:", d1.pop(5))
 		self.assertRaises(KeyError, d1.pop, '5')
 		self.assertRaises(TypeError, d1.clear, {})
 

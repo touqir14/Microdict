@@ -1,6 +1,6 @@
 import unittest
 import random
-import mdict
+from microdict import mdict
 
 def gen_random_list_unique(size, num_range, seed=0):
 
