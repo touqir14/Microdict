@@ -3,6 +3,9 @@ benchmarks/
 build/
 misc/
 __pycache__/
+dist/
+microdict.egg-info/
+
 
 # Prerequisites
 *.d

@@ -2,7 +2,6 @@ from _mdict_c import i32_i32, i32_i64, i64_i32, i64_i64, str_str
 
 str_len_MAX = 65355
 DICT_TYPES = {('i32', 'i32'):i32_i32, ('i64', 'i64'):i64_i64, ('i32', 'i64'):i32_i64, ('i64', 'i32'):i64_i32, ('str', 'str'):str_str}
-# DICT_TYPES = {('i32', 'i32'):i32_i32, ('i32', 'i64'), ('i64', 'i32'), ('i64', 'i64'), ('str', 'str')}
 
 
 def create(dtype, key_len=None, val_len=None):
