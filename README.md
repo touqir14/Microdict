@@ -6,7 +6,7 @@ Python Dictionaries are fast but their memory consumption can also be high at th
 
 ### Installation
 Microdict is absolutely built using C extensions and as such building it will require Python C api header files. Build and install the package using 
-```python setup.py install``` from the terminal after cloning the repository. Microdict is tested to work on Linux, Mac OSX, and Windows systems. You will need GCC 7+ on linux/mac osx systems and Visual C++ 14+ compiler on Windows systems to build the package.
+```python setup.py install``` from the terminal after cloning the repository. Microdict is tested to work on Linux, Mac OSX, and Windows systems. You will need GCC 7+ on linux/mac osx systems and Visual C++ 14+ compiler on Windows systems to build the package. For the best performance use on a 64 bit system.
 
 ### Usage
 The following code snippet shows common uses of the library.
@@ -153,7 +153,7 @@ Each of the cells in the tables below are of the format (Speed Gain, Space Gain)
 
 * Similarly, Space Gain : <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\text{Average memory consumed by competing hash table}}{\text{Average memory consumed by Microdict hash table}}">
 
-Experiments were carried out for the types ```"i32:i32"```, ```"i64:64"```, ```"str:str"``` (key and value length kept to 8 characters). Speed Gain and Space Gain are computed by averaging over the results of 30 experiments carried out using (unique) randomly generated data. Space consumption was computed using the [psutil](https://github.com/giampaolo/psutil) library. Time consumption was computed using the ```time.perf_counter``` method. All the experiments were conducted with Python 3.8.2. The following table shows the benchmarks against Python Dictionary for retrieving all values using the full set of keys and the ```[]``` operator.
+Experiments were carried out for the types ```"i32:i32"```, ```"i64:64"```, ```"str:str"``` (key and value length kept to 8 characters). Speed Gain and Space Gain are computed by averaging over the results of 30 experiments carried out using (unique) randomly generated data. Space consumption was computed using the [psutil](https://github.com/giampaolo/psutil) library. Time consumption was computed using the ```time.perf_counter``` method. All the experiments were conducted with Python 3.8.2 on a 64 bit Ubuntu 20.04 LTS system. The following table shows the benchmarks against Python Dictionary for retrieving all values using the full set of keys and the ```[]``` operator.
 
 | #Items     | ```i32:i32``` | ```i64:i64```| ```str:str```|
 |------------|---------------|--------------|--------------|
