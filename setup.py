@@ -37,7 +37,7 @@ setup (name = 'microdict',
         license = 'MIT',
         url = 'https://github.com/touqir14/Microdict',
         ext_package = '_mdict_c',
-        py_modules = [os.path.join(parent_dir, 'mdict')],
+        py_modules = [os.path.join(parent_dir, 'mdict'), os.path.join(parent_dir, 'run_tests'), os.path.join(parent_dir, 'microdict_tests')],
         ext_modules = [module_i32_i32, module_i32_i64, module_i64_i32, module_i64_i64, module_str_str],
         packages = find_packages(),
         classifiers = ['Development Status :: 4 - Beta',
@@ -59,4 +59,5 @@ setup (name = 'microdict',
           'Topic :: Utilities',],
         )
 
-
+from microdict import run_tests
+run_tests.run()

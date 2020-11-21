@@ -2,18 +2,13 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       APPVEYOR_JOB_NAME: "python37-x64-ubuntu"
-      # CIBW_BUILD: "cp35-manylinux_x86_64 cp36-manylinux_x86_64 cp37-manylinux_x86_64 cp38-manylinux_x86_64 cp39-manylinux_x86_64"
       CIBW_BUILD: "cp35-manylinux_* cp36-manylinux_* cp37-manylinux_* cp38-manylinux_* cp39-manylinux_*"
-      CIBW_TEST_COMMAND: python {project}/tests/test_int.py ; python {project}/tests/test_str.py 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       APPVEYOR_JOB_NAME: "python37-x64-vs2019"
-      # CIBW_BUILD: "cp35-win_amd64 cp36-win_amd64 cp37-win_amd64 cp38-win_amd64 cp39-win_amd64"
       CIBW_BUILD: "cp35-win* cp36-win* cp37-win* cp38-win* cp39-win*"
-      CIBW_TEST_COMMAND: python {project}\tests\test_int.py & python {project}\tests\test_str.py 
     - APPVEYOR_BUILD_WORKER_IMAGE: macos
       APPVEYOR_JOB_NAME: "python37-x64-macos"
       CIBW_BUILD: "cp35-macosx_x86_64 cp36-macosx_x86_64 cp37-macosx_x86_64 cp38-macosx_x86_64 cp39-macosx_x86_64"
-      CIBW_TEST_COMMAND: python {project}/tests/test_int.py ; python {project}/tests/test_str.py 
 
 stack: python 3.7
 

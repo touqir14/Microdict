@@ -248,8 +248,11 @@ def runTests_i64_i64():
 	runner.run(suite)
 
 
-if __name__ == '__main__':
+def run_all_int_tests():
 	runTests_i32_i32()
 	runTests_i32_i64()
 	runTests_i64_i32()
-	runTests_i64_i64()
+	runTests_i64_i64()	
+
+if __name__ == '__main__':
+	run_all_int_tests()
