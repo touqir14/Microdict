@@ -29,7 +29,7 @@ else:
 
 
 setup (name = 'microdict',
-        version = '0.1',
+        version = '0.1.1',
         author = 'Touqir Sajed',
         author_email = 'shuhash6@gmail.com',
         description = 'The Microdict library - a high performance Python hashtable implementation',
@@ -57,7 +57,10 @@ setup (name = 'microdict',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: C',
           'Topic :: Software Development',
-          'Topic :: Utilities',],
+          'Topic :: Utilities',
+          'Topic :: Software Development :: Libraries',
+          'Topic :: Software Development :: Libraries :: Python Modules',
+          ],
         )
 
 
