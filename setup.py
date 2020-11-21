@@ -59,5 +59,11 @@ setup (name = 'microdict',
           'Topic :: Utilities',],
         )
 
-from microdict import run_tests
+
+
+try:
+    from microdict import run_tests
+except ImportError as e:
+    print("Won't run tests : microdict package not yet installed")
+    sys.exit()
 run_tests.run()

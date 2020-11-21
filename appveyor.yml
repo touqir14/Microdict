@@ -3,12 +3,15 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       APPVEYOR_JOB_NAME: "python37-x64-ubuntu"
       CIBW_BUILD: "cp35-manylinux_* cp36-manylinux_* cp37-manylinux_* cp38-manylinux_* cp39-manylinux_*"
+      CIBW_TEST_COMMAND: python {project}/microdict/run_tests.py 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       APPVEYOR_JOB_NAME: "python37-x64-vs2019"
       CIBW_BUILD: "cp35-win* cp36-win* cp37-win* cp38-win* cp39-win*"
+      CIBW_TEST_COMMAND: python {project}\microdict\run_tests.py 
     - APPVEYOR_BUILD_WORKER_IMAGE: macos
       APPVEYOR_JOB_NAME: "python37-x64-macos"
       CIBW_BUILD: "cp35-macosx_x86_64 cp36-macosx_x86_64 cp37-macosx_x86_64 cp38-macosx_x86_64 cp39-macosx_x86_64"
+      CIBW_TEST_COMMAND: python {project}/microdict/run_tests.py 
 
 stack: python 3.7
 
