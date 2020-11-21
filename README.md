@@ -1,13 +1,22 @@
 # Microdict
 A high performance python hash table library that is generally faster and consumes significantly less memory than Python Dictionaries. It currently supports Python 3.5+.
-
+___
 ### Why Microdict? Why create another Hash table library when there is the builtin Python Dictionary?
-Python Dictionaries are fast but their memory consumption can also be high at the same time. This is partly due to the nature of Python keeping data, within RAM, in the form of PyObjects, which consume far more memory than native types such as Integers and Character Arrays. As a result, Python Dictionaries can be prohibitive in many cases while building memory intensive python applications. This motivated me to develop a typed python hash table library that consumes significantly (upto 7 times) less memory compared to python dictionaries. It is also faster than python dictionaries. Moreover, it's underlying C implementation can also outperform Google's highly optimized [Swiss Table](https://abseil.io/blog/20180927-swisstables) and Facebook's [F14](https://engineering.fb.com/2019/04/25/developer-tools/f14/) hash tables. See the [Performance Section](#performance).
+Python Dictionaries are fast but their memory consumption can also be high at the same time. This is partly due to the nature of Python keeping data, within RAM, in the form of PyObjects, which consume far more memory than native types such as Integers and Character Arrays. As a result, Python Dictionaries can be prohibitive in many cases while building memory intensive python applications. This motivated me to develop a typed python hash table library that consumes significantly (upto 7 times) less memory compared to python dictionaries. It is also faster than python dictionaries. Moreover, it's underlying C implementation can also outperform Google's highly optimized [Swiss Table](https://abseil.io/blog/20180927-swisstables) and Facebook's [F14](https://engineering.fb.com/2019/04/25/developer-tools/f14/) hash tables. See the [Performance Section](https://github.com/touqir14/Microdict/blob/main/README.md#performance).
+____
+### Installation and Building
+You can install Microdict using pip : ```pip install microdict```.
 
-### Installation
 Microdict is absolutely built using C extensions and as such building it will require Python C api header files. Build and install the package using 
 ```python setup.py install``` from the terminal after cloning the repository. Microdict is tested to work on Linux, Mac OSX, and Windows systems. You will need GCC 7+ on linux/mac osx systems and Visual C++ 14+ compiler on Windows systems to build the package. For the best performance use on a 64 bit system.
-
+____
+### Run tests
+Once installed, type the following code snippet in your python interpreter to run the tests:
+```python
+from microdict import run_tests
+run_tests.run()
+```
+____
 ### Usage
 The following code snippet shows common uses of the library.
 
@@ -68,6 +77,7 @@ print(list(d2)) # prints all d2 keys
 print(d2.get_keys()) # Same but faster approach
 
 ```
+___
 #### Hash Table types
 Currently, Microdict includes 5 types of dictionaries:
 * ```"i32:i32"``` -> 32 bit signed keys and 32 bit signed values
@@ -76,6 +86,7 @@ Currently, Microdict includes 5 types of dictionaries:
 * ```"i64:i64"``` -> 64 bit signed keys and 64 bit signed values
 * ```"str:str"``` -> string keys and string values.
 
+___
 #### Method Documentations
 * **microdict.mdict.create** (*dtype, key_len=None, val_len=None*)
 
@@ -144,6 +155,7 @@ The following are the methods that are common to all hash table types returned b
 
    : Used to iterate over values using a ```for``` loop. Example : ```for v in d.values() : print(v)```.
 
+___
 
 ### Performance
 #### Competing with Python Dictionary
@@ -162,6 +174,7 @@ Experiments were carried out for the types ```"i32:i32"```, ```"i64:64"```, ```"
 | 10000000   | 1.44x, 4.77x  | 1.48x, 3.02x | 1.53x, 4.97x |
 | 3x10000000 | 1.55x, 4.19x  | 1.3x , 2.57x | 1.36x, 3.93x |
 
+___
 #### Competing with Google's Swiss Table and Facebook's F14
 Microdict's underlying C implementation was benchmarked against Swiss Table```->```[abseil::flat_hash_map](https://abseil.io/docs/cpp/guides/container) and F14```->```[folly::F14FastMap](https://github.com/facebook/folly/blob/master/folly/container/F14.md) to further test its capabilities. The data types were set as above using the same settings. The following tables show the results for retrieving all values using the keys.
 
