@@ -25,10 +25,7 @@ from microdict import mdict
 
 dict_i32 = mdict.create("i32:i32") # Generates a dictionary with key and value type of signed 32 bit integer.
 dict_i32[1] = 2 # Just like python dictionaries, setting a key value pair.
-try:
-   print(4 in dict_i32) # prints False after catching a KeyError exception.
-except KeyError:
-   pass
+print(4 in dict_i32) # prints False.
 
 print(dict_i32[1]) # prints 2
 try:
