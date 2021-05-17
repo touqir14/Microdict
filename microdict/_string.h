@@ -28,7 +28,7 @@ typedef kbox_t vbox_t;
 
 #include "hash_funcs.h"
 
-inline uint64_t _hash_func(h_t *h, kbox_t key_box);
+static inline uint64_t _hash_func(h_t *h, kbox_t key_box);
 
 void print_str(char* str, int len){
     printf("Str of len: %d ---", len);
