@@ -211,7 +211,7 @@ inline void rehash_int(h_t* h, i_t* new_flags, i_t* new_psl, i_t new_num_buckets
 
 
 
-inline int mdict_set(h_t *h, kbox_t key_box, vbox_t val_box) 
+static inline int mdict_set(h_t *h, kbox_t key_box, vbox_t val_box)
 {																	
 	i_t x;														
 
@@ -265,7 +265,7 @@ inline int mdict_set(h_t *h, kbox_t key_box, vbox_t val_box)
 
 
 
-inline int mdict_del_map(h_t *h, kbox_t key_box, vbox_t* val_box) {
+static inline int mdict_del_map(h_t *h, kbox_t key_box, vbox_t* val_box) {
 	i_t idx;
 
 	if (val_box == NULL)

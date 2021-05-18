@@ -9,9 +9,6 @@ def read(filename):
     return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
 if os.name != 'nt':
-    if sys.platform == 'darwin' and 'APPVEYOR' in os.environ:
-        os.environ['CC'] = 'gcc-8'
-
     module_i32_i32 = Extension('i32_i32', sources = [os.path.join(parent_dir, 'int32_int32_Py.c')], extra_compile_args = ["-O3", "-w"])
     module_i32_i64 = Extension('i32_i64', sources = [os.path.join(parent_dir, 'int32_int64_Py.c')], extra_compile_args = ["-O3", "-w"])
     module_i64_i32 = Extension('i64_i32', sources = [os.path.join(parent_dir, 'int64_int32_Py.c')], extra_compile_args = ["-O3", "-w"])
